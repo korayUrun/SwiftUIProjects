@@ -1,22 +1,20 @@
-//
-//  ContentView.swift
-//  GuessTheFlah
-//
-//  Created by Koray Urun on 25.10.2025.
-//
-
 import SwiftUI
 
 struct ContentView: View {
     
-    @State private var countries = ["estonia", "france", "germany", "ireland", "italy", "nigeria", "russia","poland", "spain", "uk", "ukraine", "us","monaco"].shuffled()
+    @State private var countries = ["estonia", "france", "germany", "ireland", "italy", "nigeria", "russia","poland", "spain", "uk", "us","monaco"]
     @State private var correctAnswer = Int.random(in: 0...2)
     @State private var showingScore = false
     @State private var scoreTitle = ""
+    @State private var selectedFlag = 0
+    @State private var isGameOver = false
+    @State private var numberOfQuestions = 8
+    @State private var presentQuestionNumber = 0
+    
+    @State private var userScore = 0
 
     
     var body: some View {
-        
         
         ZStack {
             RadialGradient(stops: [
@@ -27,8 +25,9 @@ struct ContentView: View {
 
             VStack {
                 Text("Guess the Flag")
-                        .font(.largeTitle.weight(.bold))
-                        .foregroundStyle(.white)
+                    .font(.largeTitle.weight(.bold))
+                    .foregroundStyle(.white)
+                
                 VStack(spacing: 15) {
                     VStack {
                         Text("Tap the flag of")
@@ -37,7 +36,6 @@ struct ContentView: View {
                         Text(countries[correctAnswer])
                             .foregroundStyle(.white)
                             .font(.largeTitle).fontWeight(.semibold)
-                        
                     }
                     
                     ForEach(0..<3) { number in
@@ -45,44 +43,77 @@ struct ContentView: View {
                             flagTapped(number)
                         } label: {
                             Image(countries[number])
+                                .aspectRatio(contentMode: .fit)
                                 .clipShape(.capsule)
                                 .shadow(radius: 5)
                         }
                     }
                     
-                }.frame(maxWidth: .infinity)
-                    .padding(.vertical, 20)
-                    .background(.regularMaterial)
-                    .clipShape(.rect(cornerRadius: 20))
-                Text("Score: ???")
+                }
+                .frame(maxWidth: .infinity)
+                .padding(.vertical, 20)
+                .background(.regularMaterial)
+                .clipShape(.rect(cornerRadius: 20))
+                
+                Text("Score: \(userScore)")
                     .foregroundStyle(.white)
                     .font(.title.bold())
+                
+                Text("Question: \(presentQuestionNumber)/\(numberOfQuestions)")
+                    .foregroundStyle(.white)
+                    .font(.title3)
             }
+            .padding()
 
-        }.alert(scoreTitle, isPresented: $showingScore) {
+        }
+        // ✅ Cevap alert'i
+        .alert(scoreTitle, isPresented: $showingScore) {
             Button("Continue", action: askQuestion)
         } message: {
-            Text("Your score is ???")
+            if scoreTitle == "Wrong" {
+                Text("Wrong! That's the flag of \(countries[selectedFlag].capitalized)")
+            }
+            Text("Your score is \(userScore)")
         }
-        
-        
-        
+        // ✅ Oyun bitti alert'i
+        .alert("Game Over", isPresented: $isGameOver) {
+            Button("Restart", action: restartGame)
+        } message: {
+            Text("Your final score is \(userScore)/\(numberOfQuestions)")
+        }
     }
+    
     func flagTapped(_ number: Int) {
+        selectedFlag = number
+        presentQuestionNumber += 1
+        
         if number == correctAnswer {
             scoreTitle = "Correct"
+            userScore += 1
         } else {
             scoreTitle = "Wrong"
+            userScore -= 1
         }
-
-        showingScore = true
+        
+        // ✅ Oyun bitti mi kontrol et
+        if presentQuestionNumber == numberOfQuestions {
+            isGameOver = true
+        } else {
+            showingScore = true
+        }
     }
     
     func askQuestion() {
         countries.shuffle()
         correctAnswer = Int.random(in: 0...2)
     }
-
+    
+    // ✅ Yeni restart fonksiyonu
+    func restartGame() {
+        presentQuestionNumber = 0
+        userScore = 0
+        askQuestion()
+    }
 }
 
 #Preview {
