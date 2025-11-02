@@ -13,6 +13,11 @@ struct ContentView: View {
     @State private var presentQuestionNumber = 0
     
     @State private var userScore = 0
+    
+    @State private var animationAmount = 0.0
+    
+    @State private var isAnswerCorrect = false  // ✅ Yeni state
+
 
     
     var body: some View {
@@ -42,12 +47,22 @@ struct ContentView: View {
                     ForEach(0..<3) { number in
                         Button {
                             flagTapped(number)
+                            withAnimation{
+                                animationAmount += 360
+                            }
                         } label: {
                             Image(countries[number])
                                 .aspectRatio(contentMode: .fit)
                                 .clipShape(.capsule)
                                 .shadow(radius: 5)
+                            
+                                
                         }
+                        
+                        .rotation3DEffect(.degrees(animationAmount), axis: (x: 0, y: 1, z: 0))
+                        
+                        .opacity(isAnswerCorrect && number != correctAnswer ? 0.25 : 1.0)
+
                     }
                     
                 }
@@ -91,9 +106,13 @@ struct ContentView: View {
         if number == correctAnswer {
             scoreTitle = "Correct"
             userScore += 1
+            isAnswerCorrect = true  // ✅ Doğru cevap verildi
+
         } else {
             scoreTitle = "Wrong"
             userScore -= 1
+            isAnswerCorrect = false  // ✅ Doğru cevap verildi
+
         }
         
         // ✅ Oyun bitti mi kontrol et
@@ -107,6 +126,8 @@ struct ContentView: View {
     func askQuestion() {
         countries.shuffle()
         correctAnswer = Int.random(in: 0...2)
+        isAnswerCorrect = false  // ✅ Sıfırla
+
     }
     
     // ✅ Yeni restart fonksiyonu
