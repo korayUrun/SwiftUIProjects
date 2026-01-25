@@ -135,21 +135,6 @@ struct SepetDetayView: View {
 }
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 #Preview {
     AnaMagazaApp()
 }
