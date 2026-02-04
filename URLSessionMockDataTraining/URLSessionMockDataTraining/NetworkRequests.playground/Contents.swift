@@ -1,3 +1,8 @@
 import UIKit
 
-var greeting = "Hello, playground"
+// URL SESSION & Async/Await
+
+// 1. BASIC URL REQUEST
+
+// Old way (completion handler)
+func fetchFlightsOld
