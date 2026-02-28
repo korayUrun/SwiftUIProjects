@@ -11,5 +11,7 @@ Bu projede SwiftUI ile kişisel harcamalarınızı yönetebileceğiniz bir uygul
 
 ## Ekran Görüntüleri
 
-![image1](1.png)
-![image2](2.png)
+<div align="center">
+  <img src="1.png" width="200" />
+  <img src="2.png" width="200" />
+</div>
