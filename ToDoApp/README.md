@@ -2,9 +2,8 @@
 
 A Day 1 Clean Architecture assignment. Runs with in-memory data, no network required.
 
-div align="center">
+
   <img src="1.png" width="200" />
-</div>
 
 ## What's Built
 
@@ -26,4 +25,5 @@ View → ViewModel → UseCase → Protocol ← MockRepository
 - Data resets on app restart (in-memory)
 - Empty todo prevention handled in UseCase, not in View
 - Day 2 will add `async/await` + `ViewState` enum
+
 
