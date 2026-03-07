@@ -3,9 +3,9 @@
 A Day 2 async/await assignment. Simulates a weather API with loading, success, and error states.
 
 <p align="center">
-  <img src="1.png" width="250" />
-  &nbsp;&nbsp;
   <img src="2.png" width="250" />
+  &nbsp;&nbsp;
+  <img src="1.png" width="250" />
 </p>
 
 ## What's Built
